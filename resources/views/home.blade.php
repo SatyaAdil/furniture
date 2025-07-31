@@ -1,0 +1,74 @@
+{{-- resources/views/home.blade.php --}}
+@extends('layouts.base')
+
+@section('title', 'Bagus Furniture')
+
+@section('content')
+
+<!-- BAGIAN SAMBUTAN (SHORT DESCRIPTION) -->
+<section>
+    <div class="container" style="margin-top: 120px;">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-7">
+                @if (!empty($home_content) && !empty($home_content->page_value))
+                    {!! $home_content->page_value !!}
+                @else
+                    <div class="alert alert-warning">Konten Halaman Utama belum diatur dari Admin Panel.</div>
+                @endif
+            </div>
+            <div class="col-12 col-md-5">
+                <div class="p-2 flex-shrink-1">
+                    <div class="text-end">
+                        <img src="{{ asset('images/Logo Bagus.png') }}" class="rounded" alt="Logo Bagus Furniture" width="100%">
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BAGIAN LAYANAN (SERVICE) -->
+<section>
+    @if (!empty($service_content) && !empty($service_content->page_value))
+        {!! $service_content->page_value !!}
+    @else
+        <div class="container mt-5">
+            <div class="alert alert-warning">Konten Layanan belum diatur dari Admin Panel.</div>
+        </div>
+    @endif
+</section>
+
+<!-- BAGIAN PREVIEW PRODUK -->
+<section>
+    <div class="container" style="margin-top: 100px;">        
+        <div class="row g-4">
+            <div class="col-12 d-flex align-items-center justify-content-between">
+                <h3 class="text-dark">Produk Kami</h3>
+                <a href="/produk" style="color: #e4bf45; text-decoration: none;">Lihat Semua ></a>
+            </div>
+            <div class="col-12"><hr class="mb-3"></div>
+
+            @forelse ($produk as $p)
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <a href="{{ route('detail_produk', ['id' => $p->id]) }}" style="text-decoration: none; color: black;">
+                            <img src="{{ $p->image_url }}" class="card-img-top" alt="{{ $p->name_product }}" style="height: 220px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" style="font-size: 1rem;">{{ $p->name_product }}</h5>
+                                <p class="card-text fw-bold mt-auto">Rp. {{ number_format($p->price, 0, ',', '.') }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>   
+            @empty
+                 <div class="col-12">
+                    <div class="alert alert-secondary text-center">
+                        Belum ada produk untuk ditampilkan.
+                    </div>
+                </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
+@endsection
